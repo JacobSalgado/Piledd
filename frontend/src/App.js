@@ -1,10 +1,12 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home';
-import Login from '/pages/Login';
+import Login from './pages/Login';
 import Register from './pages/Register'
 import NotFound from './pages/NotFound'
-import logo from './logo.svg';
+
+import ProtectedRoute from './components/ProtectedRoute';
+
 import './App.css';
 
 function App() {
@@ -13,6 +15,7 @@ function App() {
       <Navbar />
       <main className="container">
         <Routes>
+          
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
