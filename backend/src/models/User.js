@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema(
             maxlength: 254,
             match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email.'],
         },
+        password: {
+            type: String,
+            required: [true, 'Password is required.'],
+            minlength: [8, 'Password must be at least 8 characters'],
+            select: false,
+        },
     },
     { timestamps: true }
 );
