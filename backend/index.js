@@ -7,7 +7,7 @@ const logger = require('./src/utils/logger');
 const requestLogger = require('./src/middleware/requestLogger');
 const sanitizeRequest = require('./src/middleware/sanitize');
 const errorHandler = require('./src/middleware/errorHandler');
-// const authRoutes = require('./src/routes/authRoutes');
+const authRoutes = require('./src/routes/authRoutes');
 // const mediaRoutes = require('./src/routes/mediaRoutes'); 
 
 // refuse to start with missing config
@@ -32,7 +32,7 @@ app.use(requestLogger);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 // app.use('/api/media', mediaRoutes);
 
 // 404 for unknown routes, then error handler
