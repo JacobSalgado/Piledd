@@ -27,7 +27,7 @@ async function saveToCatalog(items) {
     if (unique.length === 0) return [];
 
     await Media.bulkWrite(
-        unique.map((type, ...rest) => ({
+        unique.map(({type, ...rest}) => ({
             updateOne: {
                 filter: { source: rest.source, externalId: rest.externalId },
                 update: { $set: rest, $setOnInsert: { type } },

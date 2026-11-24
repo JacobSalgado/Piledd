@@ -16,3 +16,5 @@ const mediaSchema = new mongoose.Schema(
 
 // one document per title per source, which prevents duplicates
 mediaSchema.index({ source: 1, externalId: 1}, { unique: true});
+
+module.exports = mongoose.model('Media', mediaSchema);
