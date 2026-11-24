@@ -1,4 +1,4 @@
-const mongoose = require('mogoose');
+const mongoose = require('mongoose');
 
 const mediaSchema = new mongoose.Schema(
     {
@@ -15,4 +15,4 @@ const mediaSchema = new mongoose.Schema(
 );
 
 // one document per title per source, which prevents duplicates
-mediaSchema.index();
+mediaSchema.index({ source: 1, externalId: 1}, { unique: true});

@@ -72,6 +72,9 @@ const trendingBooks = () =>
     fetchList(`${OPEN_LIBRARY}/trending/daily.json`, {}, (d) => d.works, asBook);
 
 const graphicNovels = () =>
+    fetchList(`${OPEN_LIBRARY}/subjects/graphic_novels.json`, {}, (d) => d.works, asComic);
+
+const topManga = () =>
     fetchList(`${JIKAN}/top/manga`, {}, (d) => d.data, fromJikan);
 
 // search feature

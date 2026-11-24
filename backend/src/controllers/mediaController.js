@@ -6,6 +6,7 @@ const logger = require('../utils/logger');
 
 const FEATURED_TTL = 30 * 60 * 1000; // 30 minutes
 const SEARCH_TTL = 10 * 60 * 1000; // 10 minutes
+const FEATURED_RETRY_TTL = 2 * 60 * 1000; // 2 minutes
 
 const FEATURED_SECTIONS = [
     { id: 'books', title: 'Trending Books', fetcher: mediaApis.trendingBooks },
@@ -26,10 +27,10 @@ async function saveToCatalog(items) {
     if (unique.length === 0) return [];
 
     await Media.bulkWrite(
-        unique.map((item) => ({
+        unique.map((type, ...rest) => ({
             updateOne: {
-                filter: { source: item.source, externalId: item.externalId },
-                update: { $set: item },
+                filter: { source: rest.source, externalId: rest.externalId },
+                update: { $set: rest, $setOnInsert: { type } },
                 upsert: true,
             },
         }))
@@ -63,8 +64,9 @@ exports.getFeatured = async (req, res) => {
     }
 
     // only cache a complete result so a temporary outage isn't cached for 30 min
-    if (sections.length === FEATURED_SECTIONS.length) {
-        cache.set('featured', sections, FEATURED_TTL);
+    const complete = sections.length === FEATURED_SECTIONS.length;
+    if (sections.length > 0) {
+        cache.set('featured', sections, complete ? FEATURED_TTL : FEATURED_RETRY_TTL);
     }
     return res.json({sections});
 };
@@ -93,7 +95,7 @@ exports.search = async (req, res) => {
 
 // GET api media id
 exports.getById = async (req, res) => {
-    if (!mongoose.isValidObjectId(req.params.id)) {
+    if (!mongoose.isObjectIdOrHexString(req.params.id)) {
         return res.status(400).json({message: 'Invalid ID'});
     }
 
