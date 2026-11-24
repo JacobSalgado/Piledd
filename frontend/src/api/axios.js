@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: '/api', // relative: dev server forward it to the backend VM
 });
 
 // runs before every request: attches token if user is logged in
